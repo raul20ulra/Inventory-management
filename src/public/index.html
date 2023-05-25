@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signIn Google</title>
+</head>
+<body>
+    <h1>Google</h1>
+    <hr>
+    <br>
+
+    <div id="g_id_onload"
+         data-client_id="779026369486-eh4156ogf3v2ero3v3ibd8p1vvqbkb9n.apps.googleusercontent.com"
+         data-auto_prompt="false"
+		 data-callback="handleCredentialResponse">
+      </div>
+    </div>
+    <div class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left">
+    </div>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+    
+        function handleCredentialResponse(response) {
+            // id token de google
+            const body = { id_token: response.credential };
+			fetch("https://kumo-cupones-app-3r5ulbgaha-ue.a.run.app/auth/login-google", {
+				method: "POST",
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(body)
+			})
+				.then(resp => resp.json())
+				.then(resp => {
+					console.log(resp)
+					//localStorage.setItem('email', resp.usuario.correo)
+				})
+				.catch(console.warn);
+        }
+      </script>
+</body>
+</html>
