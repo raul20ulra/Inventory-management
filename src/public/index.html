@@ -12,7 +12,7 @@
     <br>
 
     <div id="g_id_onload"
-         data-client_id="779026369486-eh4156ogf3v2ero3v3ibd8p1vvqbkb9n.apps.googleusercontent.com"
+         data-client_id=""
          data-auto_prompt="false"
 		 data-callback="handleCredentialResponse">
       </div>
@@ -26,13 +26,13 @@
         data-logo_alignment="left">
     </div>
 
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="" async defer></script>
     <script>
     
         function handleCredentialResponse(response) {
             // id token de google
             const body = { id_token: response.credential };
-			fetch("https://kumo-cupones-app-3r5ulbgaha-ue.a.run.app/auth/login-google", {
+			fetch("", {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json'
