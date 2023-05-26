@@ -38,7 +38,9 @@ const categoryController = {
      */
     listAllCategories: async (req:Request, res:Response) => {
       try {
-        const categoriesFounds = await Category.find({});
+        const { name } = req.body;
+        if (!name)  return handlerError(res, 400, errorConstants.nameRequired);
+        const categoriesFounds = await Category.find({name});
         res.json(categoriesFounds);
       } catch (error) {
         return handlerError(res, 500, errorConstants.serverError);

@@ -6,9 +6,9 @@ import productController from "../controllers/product.controller";
 const productRoutes = Router()
 
 productRoutes.post('/create', productController.createProduct);
-productRoutes.get('/list', productController.listAllProduct);
+productRoutes.get('/list', productController.listProduct);
 productRoutes.get('/update', productController.updateProduct);
-productRoutes.get('/category/:idCategory', productController.listCategory);
+productRoutes.get('/delete', productController.deleteProduct);
 productRoutes.post('/search', productController.searchInput);
 
 
