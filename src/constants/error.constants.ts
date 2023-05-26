@@ -17,6 +17,6 @@ export const errorConstants = {
     userNotFound: 'errors.cuponera.user_not_found',
     requiredInput: 'errors.input_is_required',
     oneIsRequired: 'errors.at_least_one_fiel_is_required',
-    
+    productnotFound: 'errors.product_not_found'
 
 }

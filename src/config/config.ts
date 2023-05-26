@@ -9,4 +9,5 @@ export default {
     MONGODB_URI:process.env.MONGODB_URI || '',
     NODE_ENV: process.env.NODE_ENV || 'development',
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID  || "",
+    CLIENT_GOOGLE_SECRET: process.env.CLIENT_GOOGLE_SECRET || ""
 }

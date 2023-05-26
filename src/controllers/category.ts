@@ -17,7 +17,7 @@ const categoryController = {
           const { name } = req.body;
           // Validar que el nombre esté presente
           if (!name)  return handlerError(res, 400, errorConstants.nameRequired);
-          // Verificar si el tipo de cupón ya existe
+          // Verificar si la categoria ya existe
           const existingCategory = await Category.findOne({ name });
           if (existingCategory) return handlerError(res, 400, errorConstants.categoryAlreadyExist);
           const category = new Category({
