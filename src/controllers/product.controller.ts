@@ -40,11 +40,17 @@ const productController= {
             });
             const savedProduct = await product.save();
             return res.json(savedProduct);
-          } catch (err) {
+          } catch (error) {
             return handlerError(res, 500, errorConstants.serverError);
           }
     },  
-
+    listAllCategories: async (req:Request, res:Response) => {
+      try {
+        
+      } catch (error) {
+        return handlerError(res, 500, errorConstants.serverError);
+      }
+    }
 }
 
 

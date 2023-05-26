@@ -40,7 +40,7 @@ const categoryController = {
       try {
         const categoriesFounds = await Category.find({});
         res.json(categoriesFounds);
-      } catch (err) {
+      } catch (error) {
         return handlerError(res, 500, errorConstants.serverError);
       }
     
