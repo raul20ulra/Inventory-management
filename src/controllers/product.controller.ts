@@ -21,12 +21,10 @@ const productController= {
      */
     createProduct: async (req:Request, res:Response) => {
         try {
-            const { name, description, type, category, termsAndConditions, code, qrCode, profileImg,flyerImg,featureImg, endDate, startDate } = req.body;
-            const { companyCuponera } = req.params;
+            const { name, description, category,price,amount,img } = req.body;
+            const { /**ID DEL USUARIO */ } = req.params;
             // validar que sean MongoId Validos!
-            if( !validateMongoId(type) ||
-                !validateMongoId(category) ||
-                !validateMongoId(companyCuponera) ) return handlerError(res, 400, errorConstants.idInvalid);
+            if( !validateMongoId(category)) return handlerError(res, 400, errorConstants.idInvalid);
             // validar demas campos
             if(!name) return handlerError(res, 400, errorConstants.nameRequired);
             if(!description) return handlerError(res, 400, errorConstants.descriptionRequired);
@@ -36,7 +34,9 @@ const productController= {
             const product = new Product({
               name,
               description,
-              category,
+              price,
+              amount,
+              img 
             });
             const savedProduct = await product.save();
             return res.json(savedProduct);
