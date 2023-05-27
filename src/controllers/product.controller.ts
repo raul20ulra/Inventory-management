@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import mongoose from 'mongoose';
 import { handlerError } from "../handlers/handler.error";
 import { errorConstants } from "../constants/error.constants";
-import Category from "../models/category.model";
+import Category from '../models/category.model';
 import googleVerify from "../helpers/google.verifyToken";
 import User from "../models/user.model";
 import generateJwt from "../helpers/generateJWT";
@@ -21,18 +21,20 @@ const productController= {
      */
     createProduct: async (req:Request, res:Response) => {
         try {
-            const { name, description, amount,price,category,img } = req.body;
-            const { /**ID DEL USUARIO */ } = req.params;
+            const { name, category, description, amount,price, img } = req.body;
             // validar que sean MongoId Validos!
             if( !validateMongoId(category)) return handlerError(res, 400, errorConstants.idInvalid);
             // validar demas campos
             if(!name) return handlerError(res, 400, errorConstants.nameRequired);
             if(!description) return handlerError(res, 400, errorConstants.descriptionRequired);
-            // Validar que el category exista en CategoryCoupon
-            const categoryCoupon = await Category.findById(category);
-            if (!categoryCoupon) return handlerError(res, 400, errorConstants.categoryNotFound);
+            if(!amount) return handlerError(res, 400, errorConstants.descriptionRequired);
+            if(!img) return handlerError(res, 400, errorConstants.descriptionRequired);
+            // Validar que el category exista en Category
+            const categor = await Category.findById(category);
+            if (!categor) return handlerError(res, 400, errorConstants.categoryNotFound);
             const product = new Product({
               name,
+              category,
               description,
               price,
               amount,
@@ -46,12 +48,43 @@ const productController= {
     }, 
 
      /**
+     * Método para en listar los productos
+        * @param {Request} req
+        * @param {Response} res
+        * @returns {Promise<Response>}
+     */
+    listProduct: async (req: Request, res: Response) => {
+      try {
+        const products = await Product.find();
+        return res.json(products);
+      } catch (error) {
+        return handlerError(res, 500, errorConstants.serverError);
+      }
+    },
+  
+   /**
+     * Método para en listar los productos
+        * @param {Request} req
+        * @param {Response} res
+        * @returns {Promise<Response>}
+     */
+   listProductsCategory: async (req: Request, res: Response) => {
+    try {
+      const products = await Product.find();
+      return res.json(products);
+    } catch (error) {
+      return handlerError(res, 500, errorConstants.serverError);
+    }
+  },
+  
+
+     /**
      * Método para actualizar un producto
         * @param {Request} req
         * @param {Response} res
         * @returns {Promise<Response>}
      */
-    updateProduct: async (req: Request, res: Response) => {
+     updateProduct: async (req: Request, res: Response) => {
       try {
         const { name, description, amount, price, category, img } = req.body;
         const { productId } = req.params;
@@ -98,21 +131,6 @@ const productController= {
     },
 
      /**
-     * Método para en listar los productos
-        * @param {Request} req
-        * @param {Response} res
-        * @returns {Promise<Response>}
-     */
-    listProduct: async (req: Request, res: Response) => {
-      try {
-        const products = await Product.find();
-        return res.json(products);
-      } catch (error) {
-        return handlerError(res, 500, errorConstants.serverError);
-      }
-    },
-    
-     /**
      * Método para buscar productos
         * @param {Request} req
         * @param {Response} res
@@ -136,7 +154,7 @@ const productController= {
       },   
       {
         $lookup: {
-        from: 'categorycoupons',
+        from: 'category',
         localField: 'category',
         foreignField: '_id',
         as: 'category',
@@ -151,9 +169,9 @@ const productController= {
         limit: req.query.limit || 25,
         sort: req.query.sort || '-createdAt'
     };
-        const coupons = await Product.aggregatePaginate(coincidences, options);
-        if(!coupons.totalDocs) return handlerError(res, 404, errorConstants.productNotFound)
-        res.json(coupons)
+        const product = await Product.aggregatePaginate(coincidences, options);
+        if(!product.totalDocs) return handlerError(res, 404, errorConstants.productNotFound)
+        res.json(product)
       } catch (error) {
             return handlerError(res, 500, errorConstants.serverError);
           }

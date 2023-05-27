@@ -1,119 +1,189 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
-  title: Ginventory
-  description: Ginventory 
-  version: 0.0.1
+  title: GInventaery
+  description: GI MicroServicio inventario
+  version: 1.0.0
 servers:
   - url: http://localhost:8080
-    description:  URL local
 tags:
-  - name: Usuarios
-    description: Rutas para la administración del usuario
-  - name: Productos
-    description: Rutas para la administración de los productos
-  - name: Categorias
-    description: Rutas para la administración de las categorias
-paths: 
-  /:
+  - name: Users
+    description: Rutas para la administración de usuarios
+  - name: Category
+    description: Rutas para la administración de los categorias
+  - name: Products
+    description: Rutas para la administración de las productos
+paths:
   /auth/login-google:
     post:
-      summary: Ruta para loguearse con google
-      tags: 
-        - Login
+      summary: Authenticate with Google
+      tags:
+        - Users
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginGoogleSchema'
+              type: object
+              properties:
+                id_token:
+                  type: string
       responses:
         '200':
-          description: Un Json con las caracteristicas de loguiarse  
+          description: Successful operation
   /auth/validate-token:
     get:
-      summary: Ruta para validar el token
-      tags: 
-        - Login
-      security:
-        - ApiKeyAuth: []
+      summary: Validate authentication token
+      tags:
+        - Users
       responses:
         '200':
-          description: success true   
-  /product/create/:
+          description: Successful operation
+  /categories/create:
     post:
-      summary: Ruta encargada de crear productos
-      tags: 
-        - Productos
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - in: path
-          name: nombre
-          schema:
-            type: string
-          description: omommnjknj
+      summary: Create a new category
+      tags:
+        - Category
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createCouponCompanySchema'
+              type: object
+              properties:
+                name:
+                  type: string
       responses:
         '200':
-          description: el cupon creado.
-  /product/list:
+          description: Successful operation
+  /categories/list:
     get:
-      summary: Ruta que lista todos los productos
+      summary: Get a list of all categories
       tags:
-        - Productos
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-          description: Número de la página que se solicita
-        - in: query
-          name: limit
-          schema:
-            type: integer
-          description: Número de items que se retornan
-        - in: query
-          name: sort
-          schema:
-            type: string
-          description: ordenamiento
+        - Category
       responses:
-       "200":
-         description: Array de los productos paginados
-  /product/search:
+        '200':
+          description: Successful operation
+  /products/create:
     post:
-      summary: Ruta que busca productos [$regex]
+      summary: Create a new product
       tags:
-        - Productos
-      parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-          description: Número de la página que se solicita
-        - in: query
-          name: limit
-          schema:
-            type: integer
-          description: Número de items que se retornan
-        - in: query
-          name: sort
-          schema:
-            type: string
-          description: ordenamiento
+        - Products
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchSchema'
+              type: object
+              properties:
+                name:
+                  type: string
+                category:
+                  type: string
+                  format: uuid
+                description:
+                  type: string
+                price:
+                  type: number
+                amount:
+                  type: number
+                img:
+                  type: string
       responses:
-       "200":
-         description: Array de productos paginados
+        '200':
+          description: Successful operation
+  /products/list:
+    get:
+      summary: Get a list of products
+      tags:
+        - Products
+      responses:
+        '200':
+          description: Successful operation
+  /products/category/{idCategory}:
+    get:
+      summary: Get a list of products by category
+      tags:
+        - Products
+      parameters:
+        - name: idCategory
+          in: path
+          required: true
+          description: ID of the category
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+  /products/update/{productId}:
+    get:
+      summary: Update a product
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: ID of the product
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                category:
+                  type: string
+                  format: uuid
+                description:
+                  type: string
+                price:
+                  type: number
+                amount:
+                  type: number
+                img:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+  /products/delete/{productId}:
+    get:
+      summary: Delete a product
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: ID of the product
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+  /products/search:
+    post:
+      summary: Search for products
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input:
+                  type: string
+                categoryId:
+                  type: string
+                  format: uuid
+      responses:
+        '200':
+          description: Successful operation

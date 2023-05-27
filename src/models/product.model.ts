@@ -1,7 +1,5 @@
-import {Schema, model} from 'mongoose';
-import { CouponModel } from '../interfaces/product.interface';
-import IProduct  from '../interfaces/product.interface';
-
+import { Schema, model, PaginateModel } from 'mongoose';
+import { ProductModel, IProduct } from '../interfaces/product.interface';
 import aggregatePaginate from "mongoose-aggregate-paginate-v2";
 import paginate from 'mongoose-paginate-v2';
 
@@ -10,6 +8,11 @@ const ProductSchema = new Schema<IProduct> ({
         type: String,
         required: true
     },
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: 'CategoryCoupon',
+        required: true,
+      },
     description:{
         type:String,
         required:true
@@ -32,6 +35,6 @@ const ProductSchema = new Schema<IProduct> ({
 ProductSchema.plugin(paginate);
 ProductSchema.plugin(aggregatePaginate);
 
-const Product: CouponModel | any = model<IProduct, CouponModel >("Product", ProductSchema);
+const Product: ProductModel | any = model<IProduct, ProductModel >("Product", ProductSchema);
 
  export default Product;

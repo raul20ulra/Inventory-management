@@ -1,12 +1,12 @@
-import { Document } from 'mongoose';
+import { Schema } from 'mongoose';
 import { PaginateModel } from 'mongoose';
 
-interface IProduct extends Document {
+export interface IProduct {
     name:string;
+    category: Schema.Types.ObjectId;
     description:string;
     price:number;
     amount:number;
     img: string;
 }
-export default  IProduct;
-export interface CouponModel extends PaginateModel<IProduct> {}
+export interface ProductModel extends PaginateModel<IProduct> {}
