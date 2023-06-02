@@ -1,12 +1,12 @@
-Requerimientos:
+Requirements:
 
 
--Registro y edición de productos (nombre, descripción, cantidad, precio, etc.).
+-Registration and editing of products (name, description, quantity, price, etc.).
 
--Listado y búsqueda de productos Y asignacion de categoria.
+-List and search of products and category assignment.
 
--Visualización de detalles de productos.
+-Visualization of product details.
 
--Eliminación de productos.
+-Disposal of products.
 
--Gestión de categorías de productos.
+-Management of product categories.
